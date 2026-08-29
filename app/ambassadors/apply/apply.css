@@ -1,0 +1,2 @@
+.standalone-apply{min-height:calc(100vh - 140px)}.apply-section select{border:1px solid #ddd8d0;padding:13px;background:#fff;font:inherit;font-size:13px;color:var(--ink)}
+.saved-profile{background:#f1f8f3;border-left:4px solid #34a46f;padding:16px;display:flex;flex-direction:column;gap:6px;font-size:11px;line-height:1.6}.saved-profile span{color:var(--muted);font-size:10px}

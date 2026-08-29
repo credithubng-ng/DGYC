@@ -1,0 +1,16 @@
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import "./stories.css";
+
+const stories = [
+  { name: "A community member", place: "Lagos East", tag: "Community testimony", text: "I found a clearer pathway to learn, contribute, and connect with other young people working on practical solutions." },
+  { name: "DYC participant", place: "Somolu", tag: "Youth story", text: "The most useful part is being able to share what matters in my community and see that the idea has a response." },
+  { name: "Volunteer voice", place: "Kosofe", tag: "Volunteer story", text: "Small acts of service become more powerful when young people can find one another and work together." },
+];
+
+export default function StoriesPage() {
+  const [showForm, setShowForm] = useState(false);
+  const [sent, setSent] = useState(false);
+  return <main><nav className="nav"><Link className="brand" href="/"><span className="brand-mark">DG</span><span>DoingGood <b>Youth Connect</b></span></Link><Link className="text-link" href="/">← Back to DYC</Link></nav><section className="stories-hero pattern"><p className="eyebrow">Community stories</p><h1>Real voices. Shared experiences. A stronger connection.</h1><p>Read stories from young people and communities. Every story is labelled, moderated, and shared only with the contributor’s permission.</p><button className="button primary" onClick={()=>setShowForm(true)}>Share your story <span>→</span></button></section><section className="stories-list"><div className="section-heading"><div><p className="eyebrow blue">Voices from the community</p><h2>What connection makes possible.</h2></div><span className="prototype-pill">Sample stories</span></div><div className="story-grid">{stories.map(s=><article className="story" key={s.name}><span className="story-tag">{s.tag}</span><p>“{s.text}”</p><div className="story-footer"><b>{s.name}</b><small>{s.place}</small><button aria-label={`Share ${s.tag}`}>Share ↗</button></div></article>)}</div></section>{showForm&&<div className="modal-backdrop" onClick={()=>setShowForm(false)}><section className="story-modal" role="dialog" aria-modal="true" onClick={e=>e.stopPropagation()}>{sent?<><p className="eyebrow blue">Thank you</p><h2>Your story is with the review team.</h2><p>It will not be published without your selected permission and moderation review.</p><button className="button primary" onClick={()=>setShowForm(false)}>Close <span>×</span></button></>:<><button className="close" onClick={()=>setShowForm(false)} aria-label="Close">×</button><p className="eyebrow blue">Share your experience</p><h2>Your voice can help others.</h2><form onSubmit={e=>{e.preventDefault();setSent(true)}}><label>Your story<textarea required placeholder="Tell us about your experience..." /></label><label className="check"><input type="checkbox" required /> I give permission for this story to be reviewed for possible publication.</label><label className="check"><input type="checkbox" /> Publish anonymously if approved.</label><button className="button primary" type="submit">Send for review <span>→</span></button></form></>}</section></div>}<footer><span className="brand-mark">DG</span><span>DoingGood Youth Connect</span><span className="footer-note">An initiative of Senator Tokunbo Abiru · Separate from SAIL</span></footer></main>;
+}

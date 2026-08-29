@@ -1,0 +1,18 @@
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import "./import.css";
+
+const files = ["Others_Lagos_East_Updated.csv", "SAIL_Data_Lagos_East_Updated.csv", "Senator_Abiru_Initiative_Data_Lagos_East_Updated.csv"];
+export default function ImportReviewPage() {
+  const [prepared, setPrepared] = useState(false);
+  return <main><nav className="nav"><Link className="brand" href="/admin"><span className="brand-mark">DG</span><span>DoingGood <b>Youth Connect</b></span></Link><Link className="text-link" href="/admin">← Admin hub</Link></nav>
+    <section className="import-hero"><p className="eyebrow yellow">Data governance · Review required</p><h1>Review Lagos East contacts before import.</h1><p>This batch is limited to the three approved files. It creates contact/applicant records only—not user accounts, political subscribers, or SAIL accounts.</p></section>
+    <section className="import-page"><div className="import-heading"><div><p className="eyebrow blue">Import review</p><h2>Batch LE-2026-08</h2></div><span className="status-pill">Awaiting approval</span></div>
+      <div className="import-stats"><div><b>41,615</b><span>deduplicated contacts</span></div><div><b>59,070</b><span>source rows reviewed</span></div><div><b>17,455</b><span>duplicates collapsed</span></div><div><b>0</b><span>consents inferred</span></div></div>
+      <div className="import-grid"><article className="import-card"><p className="eyebrow blue">Approved source scope</p><h3>Three files only</h3><ul>{files.map(file => <li key={file}>{file}</li>)}</ul><p className="muted">Creditze, Vortex, Transbill, other Typeform files, full master datasets, and non-Lagos-East records were excluded.</p></article><article className="import-card"><p className="eyebrow blue">Location filter</p><h3>Standardized to Lagos East</h3><div className="location-tags"><span>Epe</span><span>Ibeju-Lekki</span><span>Ikorodu</span><span>Kosofe</span><span>Shomolu</span></div><p className="muted">Equivalent labels such as “Local Government”, “LGA”, and “Somolu” are grouped for review.</p></article></div>
+      <section className="quality-card"><div><p className="eyebrow yellow">Data-quality exceptions</p><h3>Review before committing</h3></div><div className="quality-list"><div><b>4,192</b><span>missing names</span></div><div><b>1,215</b><span>missing both email and phone</span></div><div><b>9,131</b><span>matched across programmes</span></div></div></section>
+      <section className="safeguard-card"><p className="eyebrow blue">Safeguards applied</p><h3>What this import will and will not do</h3><div className="safeguard-columns"><div><b>Will do</b><p>Create contact/applicant records with source history, programme history, duplicate links, and quality flags.</p></div><div><b>Will not do</b><p>Create accounts, activate consent, send messages, share with SAIL, or prepare a Facebook Custom Audience.</p></div></div></section>
+      <div className="import-actions"><button className="button primary" onClick={() => setPrepared(true)}>{prepared ? "Batch prepared for backend review" : "Prepare batch for backend review"}</button><Link className="button secondary" href="/admin">Return to admin hub</Link></div>{prepared && <div className="success-note"><b>Preparation recorded.</b> The batch is ready for controlled backend review. A second administrator should approve the import before records are committed.</div>}<p className="audit-note">Audit note: staged file <code>data/import-staging/lagos-east-contacts-deduplicated.csv</code> · contact/applicant only · user accounts not created.</p>
+    </section></main>;
+}
