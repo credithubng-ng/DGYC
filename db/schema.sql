@@ -62,3 +62,13 @@ CREATE INDEX IF NOT EXISTS idx_source_records_contact ON source_records(contact_
 CREATE INDEX IF NOT EXISTS idx_participation_contact ON programme_participation(contact_id);
 CREATE INDEX IF NOT EXISTS idx_consent_contact_purpose ON consent_records(contact_id, purpose);
 CREATE INDEX IF NOT EXISTS idx_audit_batch ON audit_events(batch_reference);
+
+-- Administrative access is separate from ordinary DYC user accounts.
+CREATE TABLE IF NOT EXISTS admin_accounts (id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, display_name TEXT, status TEXT NOT NULL DEFAULT 'invited', invited_by TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS admin_roles (id TEXT PRIMARY KEY, role_key TEXT NOT NULL UNIQUE, description TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS admin_account_roles (admin_account_id TEXT NOT NULL REFERENCES admin_accounts(id), role_id TEXT NOT NULL REFERENCES admin_roles(id), assigned_by TEXT NOT NULL, assigned_at TEXT NOT NULL, revoked_at TEXT, PRIMARY KEY (admin_account_id, role_id));
+CREATE TABLE IF NOT EXISTS admin_permissions (permission_key TEXT PRIMARY KEY, description TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS admin_role_permissions (role_id TEXT NOT NULL REFERENCES admin_roles(id), permission_key TEXT NOT NULL REFERENCES admin_permissions(permission_key), PRIMARY KEY (role_id, permission_key));
+CREATE INDEX IF NOT EXISTS idx_admin_account_roles_account ON admin_account_roles(admin_account_id);
+CREATE INDEX IF NOT EXISTS idx_admin_role_permissions_role ON admin_role_permissions(role_id);
+CREATE INDEX IF NOT EXISTS idx_admin_accounts_status ON admin_accounts(status);
