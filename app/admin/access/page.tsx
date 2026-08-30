@@ -1,27 +1,14 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
 import "./access.css";
 
-const rows = [
-  ["View civic and stewardship content", "Public", "Public"],
-  ["Share public content", "Public", "Public"],
-  ["View Youth Voice ideas and responses", "Public", "Public"],
-  ["Comment, support, or submit an idea", "Member", "Verified account"],
-  ["Share a testimonial", "Member", "Verified account"],
-  ["Apply for opportunities and benefits", "Member", "Profile + purpose consent"],
-  ["View voucher and application status", "Member", "Verified account"],
-  ["Use Ambassador sharing toolkit", "Ambassador", "Approved role"],
-  ["View Ambassador activity metrics", "Ambassador", "Own activity only"],
-  ["View deeper community insights", "Ambassador", "Approved role + privacy rules"],
-  ["Moderate, approve, and import", "Administrator", "Admin role + audit log"],
+const roles=[
+  ["Super Admin","Full platform control, uploaded data, roles, exports, settings, and audit history.","Highest privilege"],
+  ["Administrator","Approvals, moderation, stewardship, benefits, and assigned operational records.","Operational access"],
+  ["Moderator","Youth Voice, comments, stories, and public content review.","Content access"],
+  ["Benefits Officer","Voucher applications and benefit fulfilment fields only.","Limited access"],
+  ["Read-only","Approved reports and dashboards without editing or exporting.","View only"],
 ];
-
-export default function AccessPage() {
-  return <main><nav className="nav"><Link className="brand" href="/admin"><span className="brand-mark">DG</span><span>DoingGood <b>Youth Connect</b></span></Link><Link className="text-link" href="/admin">← Admin hub</Link></nav>
-    <section className="access-hero"><p className="eyebrow yellow">Administration · Access policy</p><h1>Open sharing. Responsible access.</h1><p>Public content should travel freely. Personal actions, benefits, deeper tools, and administrative controls require the right level of verification.</p></section>
-    <section className="access-page"><div className="access-heading"><div><p className="eyebrow blue">Approved access matrix</p><h2>Who can do what</h2></div><span className="policy-pill">Policy draft · ready for backend</span></div>
-      <div className="access-note"><b>Sharing is public by default.</b><span>Anyone may share public DYC content. Sharing does not expose private profile information or grant access to restricted actions.</span></div>
-      <div className="access-table"><div className="access-row access-header"><span>Activity</span><span>Access level</span><span>Requirement</span></div>{rows.map(([activity,level,requirement])=><div className="access-row" key={activity}><span>{activity}</span><strong className={`level-${level.toLowerCase()}`}>{level}</strong><span className="requirement">{requirement}</span></div>)}</div>
-      <div className="access-cards"><article><p className="eyebrow yellow">Ambassador boundary</p><h3>More tools, not private data</h3><p>Ambassadors can access their own sharing links, reach, clicks, referrals, and approved content tools. They cannot view another person’s private profile, political preference, or sensitive attribute.</p></article><article><p className="eyebrow blue">Consent boundary</p><h3>Benefits stay independent</h3><p>Opportunity, civic, SAIL, and political communication consent remain separate. Political consent never determines access to a benefit or opportunity.</p></article></div>
-      <div className="access-footer"><Link className="button primary" href="/admin/import">Review contact import</Link><Link className="button secondary" href="/admin">Return to Admin</Link></div>
-    </section></main>;
-}
+const rows=[["View and manage uploaded contact data","Super Admin","Full records + controlled export"],["Merge duplicates and correct source records","Super Admin","Audit reason required"],["Create, suspend, and assign admin roles","Super Admin","Super Admin only"],["Review voucher applications","Administrator / Benefits Officer","Assigned benefit fields"],["Moderate Youth Voice and stories","Administrator / Moderator","Content workspace"],["Review consent and audit events","Super Admin / Administrator","Purpose-limited view"],["Public sharing of approved content","All users","No private data included"]];
+export default function AccessPage(){const [selected,setSelected]=useState("Super Admin");return <main><nav className="nav"><Link className="brand" href="/admin"><span className="brand-mark">DG</span><span>DoingGood <b>Youth Connect</b></span></Link><Link className="text-link" href="/admin">← Admin hub</Link></nav><section className="access-hero"><p className="eyebrow yellow">Administration · Access control · Demo</p><h1>Give every role the right level of access.</h1><p>Super Admins protect the platform and its uploaded data. Other roles receive only the information needed for their work.</p></section><section className="access-page"><div className="access-heading"><div><p className="eyebrow blue">Role management</p><h2>Admin and Super Admin</h2></div><span className="policy-pill">Demo policy · backend security required</span></div><div className="access-note"><b>Uploaded data is privileged.</b><span>Only Super Admin can access full uploaded datasets, merge records, correct source data, or export. Every access and export must be recorded.</span></div><div className="role-grid">{roles.map(([role,description,level])=><button className={`role-card ${selected===role?"selected":""}`} key={role} onClick={()=>setSelected(role)}><span>{level}</span><h3>{role}</h3><p>{description}</p><b>View permissions →</b></button>)}</div><div className="selected-role"><p className="eyebrow yellow">Selected role</p><h3>{selected}</h3><p>{selected==="Super Admin"?"Can access the uploaded contact/applicant repository, including source provenance and deduplication tools. Export remains controlled and audit logged.":"Access is limited to assigned functions. Full uploaded data, unrestricted exports, role management, and security settings remain unavailable."}</p></div><div className="access-table"><div className="access-row access-header"><span>Capability</span><span>Who can access</span><span>Control</span></div>{rows.map(([activity,level,requirement])=><div className="access-row" key={activity}><span>{activity}</span><strong className={level.startsWith("Super")?"level-administrator":"level-member"}>{level}</strong><span className="requirement">{requirement}</span></div>)}</div><div className="access-cards"><article><p className="eyebrow yellow">Super Admin guardrail</p><h3>Privileged, not invisible</h3><p>Super Admin actions are visible in the audit trail: who accessed a record, what changed, what was exported, when, and why.</p></article><article><p className="eyebrow blue">Account boundary</p><h3>Contacts are not users</h3><p>Uploaded records remain contacts/applicants. They become user accounts only when a person independently signs up and gives the required consent.</p></article></div><div className="access-footer"><Link className="button primary" href="/admin/import">Open uploaded data import</Link><Link className="button secondary" href="/admin">Return to Admin</Link></div></section></main>}
