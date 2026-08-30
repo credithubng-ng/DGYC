@@ -1,0 +1,6 @@
+name = "dyc-resend-email"
+main = "worker.js"
+compatibility_date = "2026-08-30"
+
+[vars]
+RESEND_FROM_EMAIL = "no-reply@mail.dyc.doinggood.com.ng"

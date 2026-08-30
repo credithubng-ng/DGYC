@@ -1,0 +1,4 @@
+export type DycEmailType = "otp" | "admin_invitation" | "approval" | "consent_notice" | "generic";
+export type DycEmailRequest = { type: DycEmailType; to: string; data?: Record<string, string>; idempotencyKey?: string };
+const workerUrl = process.env.NEXT_PUBLIC_DYC_EMAIL_WORKER_URL || "";
+export async function sendDycEmail(request: DycEmailRequest) { if (!workerUrl) throw new Error("DYC email Worker URL is not configured"); const response = await fetch(`${workerUrl.replace(/\/$/, "")}/send`, { method: "POST", headers: { "Content-Type": "application/json", ...(request.idempotencyKey ? { "Idempotency-Key": request.idempotencyKey } : {}) }, body: JSON.stringify(request) }); const result = await response.json(); if (!response.ok) throw new Error(result?.message || result?.error || "Email delivery failed"); return result; }

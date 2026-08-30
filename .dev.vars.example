@@ -1,0 +1,3 @@
+RESEND_API_KEY="paste-your-Resend-key-only-in-local-secret-storage"
+RESEND_FROM_EMAIL="no-reply@mail.dyc.doinggood.com.ng"
+NEXT_PUBLIC_DYC_EMAIL_WORKER_URL="https://your-worker.workers.dev"
